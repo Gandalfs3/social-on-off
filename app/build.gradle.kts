@@ -81,6 +81,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+
 }
 
 hilt {

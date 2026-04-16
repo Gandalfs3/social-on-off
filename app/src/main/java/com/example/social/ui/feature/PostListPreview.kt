@@ -1,5 +1,6 @@
 package com.example.social.ui.feature
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,8 @@ import com.example.social.ui.feature.posts.PostViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(
-    viewModel: PostViewModel = hiltViewModel()
+    viewModel: PostViewModel = hiltViewModel(),
+    onPostClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -52,7 +54,7 @@ fun PostListScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(state.posts) { post ->
-                    PostItem(post = post)
+                    PostItem(post = post, onClick = { onPostClick (post.id)})
                 }
             }
 
@@ -72,9 +74,9 @@ fun PostListScreen(
 }
 
 @Composable
-fun PostItem(post: Post) {
+fun PostItem(post: Post, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick ()},
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
