@@ -38,7 +38,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -77,4 +77,10 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging)
 
+    //lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+}
+
+hilt {
+    enableAggregatingTask = false
 }
