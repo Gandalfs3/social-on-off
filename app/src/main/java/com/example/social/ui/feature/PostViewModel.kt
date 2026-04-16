@@ -9,9 +9,14 @@ import com.example.social.data.remote.ApiService
 import com.example.social.domain.Post
 import com.example.social.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,17 +27,44 @@ class PostViewModel @Inject constructor(
     private val repository: PostRepository
 ) : ViewModel() {
 
-    val posts: StateFlow<List<Post>> = repository.getPosts()
+    private val _state = MutableStateFlow(PostState())
+    val state: StateFlow<PostState> = _state.asStateFlow()
+
+    /*val posts: StateFlow<List<Post>> = repository.getPosts()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
-        )
+        )*/
 
     init {
         //testApiConnection()
         //insertDummyPost()
-        fetchNewPosts()
+        //fetchNewPosts()
+        observePosts()
+        refreshPosts()
+    }
+
+    private fun observePosts() {
+        repository.getPosts()
+            .onEach { posts ->
+                _state.update { it.copy(posts = posts) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun refreshPosts() {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            try {
+                repository.refreshPosts()
+                _state.update { it.copy(isLoading = false, error = null) }
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(isLoading = false, error = "Error de conexión: ${e.message}")
+                }
+            }
+        }
     }
 
     private fun fetchNewPosts() {

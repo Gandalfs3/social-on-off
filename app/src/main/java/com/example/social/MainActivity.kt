@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.social.ui.feature.PostListPreviewScreen
+import com.example.social.ui.feature.PostListScreen
 import com.example.social.ui.feature.posts.PostViewModel
 import com.example.social.ui.theme.SocialTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +33,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SocialTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    PostListPreviewScreen()
+                    //PostListPreviewScreen()
+                    PostListScreen()
                 }
             }
         }
@@ -42,7 +44,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Surface(color = MaterialTheme.colorScheme.background) {
-        PostListPreviewScreen()
+        //PostListPreviewScreen()
+        PostListScreen()
     }
 }
 
