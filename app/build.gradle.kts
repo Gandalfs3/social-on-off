@@ -79,6 +79,8 @@ dependencies {
 
     //lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    implementation("androidx.activity:activity-ktx:1.9.0")
 }
 
 hilt {
