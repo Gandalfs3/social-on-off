@@ -1,15 +1,31 @@
+# IDE - Android Studio / IntelliJ
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.iws
+*.ipr
+/out/
+.gradle/
+build/
+
+# Local configuration (IMPORTANTE: Nunca subir esto)
 local.properties
+
+# Android Studio temporary files
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Unit test coverage reports
+/build/reports/
+/build/test-results/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# Log files
+*.log
