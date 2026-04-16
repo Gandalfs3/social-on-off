@@ -6,19 +6,43 @@ import androidx.lifecycle.viewModelScope
 import com.example.social.data.local.dao.post.PostDao
 import com.example.social.data.local.entities.PostEntity
 import com.example.social.data.remote.ApiService
+import com.example.social.domain.Post
+import com.example.social.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val apiService: ApiService,
-    private val postDao: PostDao
+    private val postDao: PostDao,
+    private val repository: PostRepository
 ) : ViewModel() {
+
+    val posts: StateFlow<List<Post>> = repository.getPosts()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     init {
         //testApiConnection()
-        insertDummyPost()
+        //insertDummyPost()
+        fetchNewPosts()
+    }
+
+    private fun fetchNewPosts() {
+        viewModelScope.launch {
+            try {
+                repository.refreshPosts()
+            } catch (e: Exception) {
+                Log.e("API_ERROR", "No se pudo actualizar: ${e.message}")
+            }
+        }
     }
 
     private fun testApiConnection() {
