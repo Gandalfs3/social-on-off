@@ -48,7 +48,7 @@ fun PostDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp, top = 0.dp, bottom = 5.dp),
+                .padding(start = 10.dp, top = 0.dp, bottom = 5.dp, end = 10.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {

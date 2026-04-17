@@ -8,4 +8,8 @@ interface PostRepository {
     suspend fun refreshPosts()
 
     fun getPostById(postId: Int): Flow<Post?>
+
+    fun getPostsWithCommentsCount(): Flow<List<Post>>
+
+
 }

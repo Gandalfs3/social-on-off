@@ -26,7 +26,7 @@ class PostRepositoryImpl @Inject constructor(
         try {
             val remotePosts = apiService.getPosts()
             val entities = remotePosts.map { it.toEntity() }
-            postDao.insertPosts(entities)
+            postDao.upsertPosts(entities)
         } catch (e: Exception) {
             throw e
         }
@@ -34,6 +34,12 @@ class PostRepositoryImpl @Inject constructor(
 
     override fun getPostById(postId: Int): Flow<Post?> {
         return postDao.getPostById(postId).map { it?.toDomain() }
+    }
+
+    override fun getPostsWithCommentsCount(): Flow<List<Post>> {
+        return postDao.getAllPostsWithCommentCount().map { list ->
+            list.map { it.toDomain() }
+        }
     }
 }
 
