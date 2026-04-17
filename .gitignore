@@ -14,8 +14,6 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
-*.apk
-*.aab
 
 # Unit test coverage reports
 /build/reports/
