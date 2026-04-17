@@ -1,0 +1,40 @@
+package com.example.social.ui.feature
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.social.domain.Comment
+import com.example.social.domain.repository.CommentRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CommentViewModel @Inject constructor(
+    private val repository: CommentRepository
+) : ViewModel() {
+
+    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
+    val comments: StateFlow<List<Comment>> = _comments.asStateFlow()
+
+    fun loadComments(postId: Int) {
+        viewModelScope.launch {
+            repository.getCommentsByPost(postId).collect { list ->
+                _comments.value = list
+            }
+        }
+    }
+
+    fun addComment(postId: Int, name: String, content: String) {
+        viewModelScope.launch {
+            val newComment = Comment(
+                postId = postId,
+                name = name,
+                body = content
+            )
+            repository.addComment(newComment)
+        }
+    }
+}
