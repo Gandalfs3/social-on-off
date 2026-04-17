@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.social.domain.Comment
-import com.example.social.ui.feature.CommentViewModel
+import com.example.social.ui.feature.comments.CommentViewModel
+import com.example.social.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,10 +32,10 @@ fun PostDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detalles del Post #$postId") },
+                title = { Text(stringResource(R.string.post_deatail_id, postId)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 windowInsets = WindowInsets(0.dp),
@@ -70,7 +72,7 @@ fun PostDetailScreen(
             }
             item {
                 Text(
-                    text = "Comentarios (${comments.size})",
+                    text = stringResource(R.string.comments, comments.size),
                     style = MaterialTheme.typography.titleMedium
                 )
                 AddCommentSection(onAdd = { name, body ->
@@ -95,13 +97,14 @@ fun AddCommentSection(onAdd: (String, String) -> Unit) {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Tu nombre") },
-                modifier = Modifier.fillMaxWidth()
+                label = { Text(stringResource(R.string.your_name)) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
             OutlinedTextField(
                 value = body,
                 onValueChange = { body = it },
-                label = { Text("Escribe un comentario...") },
+                label = { Text(stringResource(R.string.write_comments)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
@@ -114,7 +117,7 @@ fun AddCommentSection(onAdd: (String, String) -> Unit) {
                 },
                 modifier = Modifier.align(androidx.compose.ui.Alignment.End).padding(top = 8.dp)
             ) {
-                Text("Publicar")
+                Text(stringResource(R.string.add_comments))
             }
         }
     }

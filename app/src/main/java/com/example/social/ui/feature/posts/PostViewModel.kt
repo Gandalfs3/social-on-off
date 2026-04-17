@@ -6,13 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.social.data.local.dao.post.PostDao
 import com.example.social.data.local.entities.PostEntity
 import com.example.social.data.remote.ApiService
-import com.example.social.domain.Post
 import com.example.social.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -29,22 +30,26 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PostState())
-    val state: StateFlow<PostState> = repository.getPostsWithCommentsCount()
-        .map { posts ->
-            PostState(posts = posts, isLoading = false)
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+    val state: StateFlow<PostState> = _searchQuery
+        .debounce(300)
+        .flatMapLatest { query ->
+            if (query.isEmpty()) {
+                repository.getPostsWithCommentsCount()
+            } else {
+                repository.searchPosts(query)
+            }
         }
+        .map { posts -> PostState(posts = posts, isLoading = false) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = PostState(isLoading = true)
         )
 
-    /*val posts: StateFlow<List<Post>> = repository.getPosts()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )*/
+
 
     init {
         //testApiConnection()
@@ -52,6 +57,10 @@ class PostViewModel @Inject constructor(
         //fetchNewPosts()
         observePosts()
         refreshPosts()
+    }
+
+    fun onSearchQueryChange(newQuery: String) {
+        _searchQuery.value = newQuery
     }
 
     private fun observePosts() {

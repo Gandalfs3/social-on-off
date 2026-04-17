@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">social</string>
+    <string name="main_title">Social APP</string>
+    <string name="search_placeholder">Buscar por título o ID...</string>
+    <string name="post_deatail_id">Detalles del Post #%1$d</string>
+    <string name="back">Regresar</string>
+    <string name="comments">Comentarios (%1$d)</string>
+    <string name="your_name">Tu nombre</string>
+    <string name="write_comments">Escribe un comentario...</string>
+    <string name="add_comments">Agregar</string>
+
 </resources>

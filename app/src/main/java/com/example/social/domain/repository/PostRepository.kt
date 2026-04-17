@@ -11,5 +11,5 @@ interface PostRepository {
 
     fun getPostsWithCommentsCount(): Flow<List<Post>>
 
-
+    fun searchPosts(query: String): Flow<List<Post>>
 }

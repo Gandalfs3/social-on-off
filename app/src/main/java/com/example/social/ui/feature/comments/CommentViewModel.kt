@@ -1,4 +1,4 @@
-package com.example.social.ui.feature
+package com.example.social.ui.feature.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
