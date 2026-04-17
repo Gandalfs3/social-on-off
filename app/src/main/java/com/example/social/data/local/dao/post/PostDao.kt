@@ -30,7 +30,7 @@ interface PostDao {
     GROUP BY posts.id
     """
     )
-    fun searchPosts(query: String): Flow<List<PostEntity>>
+    fun searchPosts(query: String): Flow<List<PostWithCommentCount>>
 
     @Query("SELECT * FROM posts WHERE id = :postId")
     fun getPostById(postId: Int): Flow<PostEntity?>
