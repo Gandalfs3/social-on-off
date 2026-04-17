@@ -1,0 +1,9 @@
+package com.example.social.domain
+
+data class Post(
+    val id: Int,
+    val userId: Int,
+    val title: String,
+    val body: String,
+    val commentCount: Int = 0
+)

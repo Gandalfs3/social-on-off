@@ -2,13 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+
+    alias(libs.plugins.kotlin.symbol.processing)
+    // Ensure KSP version matches your Kotlin version (2.0.21)
+    //id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+
 }
 
 android {
     namespace = "com.example.social"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.social"
@@ -57,4 +61,35 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging)
+
+    //lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+
+    //pruebas unitarias
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+}
+
+hilt {
+    enableAggregatingTask = false
 }
