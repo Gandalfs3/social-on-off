@@ -22,7 +22,14 @@ interface PostDao {
     @Query("SELECT * FROM posts")
     fun getAllPosts(): Flow<List<PostEntity>>
 
-    @Query("SELECT * FROM posts WHERE title LIKE '%' || :query || '%' OR id = :query")
+    @Query("""
+    SELECT posts.*, COUNT(comments.id) AS commentCount 
+    FROM posts 
+    LEFT JOIN comments ON posts.id = comments.postId 
+    WHERE posts.title LIKE '%' || :query || '%' OR posts.id = :query
+    GROUP BY posts.id
+    """
+    )
     fun searchPosts(query: String): Flow<List<PostEntity>>
 
     @Query("SELECT * FROM posts WHERE id = :postId")

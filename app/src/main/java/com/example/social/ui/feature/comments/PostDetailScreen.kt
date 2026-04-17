@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.social.domain.Comment
-import com.example.social.ui.feature.CommentViewModel
+import com.example.social.ui.feature.comments.CommentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

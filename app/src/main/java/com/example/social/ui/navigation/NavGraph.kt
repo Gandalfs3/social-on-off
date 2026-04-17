@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.social.ui.feature.PostListScreen
+import com.example.social.ui.feature.posts.PostListScreen
 import com.example.social.ui.feature.comments.PostDetailScreen
 
 @Composable

@@ -41,6 +41,12 @@ class PostRepositoryImpl @Inject constructor(
             list.map { it.toDomain() }
         }
     }
+
+    override fun searchPosts(query: String): Flow<List<Post>> {
+        return postDao.searchPosts(query).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
 }
 
 
