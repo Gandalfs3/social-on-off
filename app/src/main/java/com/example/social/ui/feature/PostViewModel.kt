@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,7 +29,15 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PostState())
-    val state: StateFlow<PostState> = _state.asStateFlow()
+    val state: StateFlow<PostState> = repository.getPostsWithCommentsCount()
+        .map { posts ->
+            PostState(posts = posts, isLoading = false)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = PostState(isLoading = true)
+        )
 
     /*val posts: StateFlow<List<Post>> = repository.getPosts()
         .stateIn(

@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.social.ui.feature.PostListPreviewScreen
 import com.example.social.ui.feature.PostListScreen
 import com.example.social.ui.feature.posts.PostViewModel
+import com.example.social.ui.navigation.NavGraph
 import com.example.social.ui.theme.SocialTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +35,8 @@ class MainActivity : ComponentActivity() {
             SocialTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     //PostListPreviewScreen()
-                    PostListScreen()
+                    //PostListScreen()
+                    NavGraph()
                 }
             }
         }
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Surface(color = MaterialTheme.colorScheme.background) {
         //PostListPreviewScreen()
-        PostListScreen()
+        //PostListScreen()
     }
 }
 
