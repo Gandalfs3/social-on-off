@@ -31,6 +31,10 @@ class PostRepositoryImpl @Inject constructor(
             throw e
         }
     }
+
+    override fun getPostById(postId: Int): Flow<Post?> {
+        return postDao.getPostById(postId).map { it?.toDomain() }
+    }
 }
 
 

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.social.domain.Comment
@@ -21,9 +22,9 @@ fun PostDetailScreen(
     viewModel: CommentViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = postId) {
-        viewModel.loadComments(postId)
+        viewModel.loadPostData(postId)
     }
-
+    val post by viewModel.post.collectAsState()
     val comments by viewModel.comments.collectAsState()
 
     Scaffold(
@@ -34,33 +35,51 @@ fun PostDetailScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
                     }
-                }
+                },
+                windowInsets = WindowInsets(0.dp),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
             )
         }
     ) { padding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(16.dp, top = 0.dp, bottom = 5.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Comentarios (${comments.size})",
-                style = MaterialTheme.typography.titleLarge
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            AddCommentSection(onAdd = { name, body ->
-                viewModel.addComment(postId, name, body)
-            })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(comments) { comment ->
-                    CommentItem(comment)
+            item {
+                post?.let {
+                    Column {
+                        Text(
+                            text = it.title,
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = it.body,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                    }
                 }
+            }
+            item {
+                Text(
+                    text = "Comentarios (${comments.size})",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                AddCommentSection(onAdd = { name, body ->
+                    viewModel.addComment(postId, name, body)
+                })
+            }
+
+            items(comments) { comment ->
+                CommentItem(comment)
             }
         }
     }

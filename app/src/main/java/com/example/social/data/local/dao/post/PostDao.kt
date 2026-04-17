@@ -17,4 +17,7 @@ interface PostDao {
 
     @Query("SELECT * FROM posts WHERE title LIKE '%' || :query || '%' OR id = :query")
     fun searchPosts(query: String): Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM posts WHERE id = :postId")
+    fun getPostById(postId: Int): Flow<PostEntity?>
 }
